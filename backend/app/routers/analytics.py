@@ -48,15 +48,12 @@ async def get_scores(
                 {"bucket": "26-50", "count": 0},
                 {"bucket": "51-75", "count": 0},
                 {"bucket": "76-100", "count": 0}]
-    
-    # Define buckets
     buckets = [
         (0, 25, "0-25"),
         (26, 50, "26-50"),
         (51, 75, "51-75"),
         (76, 100, "76-100"),
-    ]
-    
+    ]   
     count_exprs = []
     bucket_labels = []
     for low, high, label in buckets:
