@@ -1,6 +1,4 @@
 """Router for analytics endpoints.
-
-Each endpoint performs SQL aggregation queries on the interaction data
 populated by the ETL pipeline. All endpoints require a ).
 """
 from app.auth import verify_api_key
