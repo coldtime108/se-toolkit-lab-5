@@ -4,7 +4,7 @@ Each endpoint performs SQL aggregation queries on the interaction data
 populated by the ETL pipeline. All endpoints require a `lab` query
 parameter to filter results by lab (e.g., "lab-01").
 """
-
+from app.auth import verify_api_key
 from fastapi import APIRouter, Depends, Query
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlmodel import select, func
@@ -20,6 +20,7 @@ router = APIRouter()
 async def get_scores(
     lab: str = Query(..., description="Lab identifier, e.g. 'lab-01'"),
     session: AsyncSession = Depends(get_session),
+    api_key: str = Depends(verify_api_key)
 ):
     """Score distribution histogram for a given lab.
 
@@ -48,15 +49,12 @@ async def get_scores(
                 {"bucket": "26-50", "count": 0},
                 {"bucket": "51-75", "count": 0},
                 {"bucket": "76-100", "count": 0}]
-    
-    # Define buckets
     buckets = [
         (0, 25, "0-25"),
         (26, 50, "26-50"),
         (51, 75, "51-75"),
         (76, 100, "76-100"),
-    ]
-    
+    ]   
     count_exprs = []
     bucket_labels = []
     for low, high, label in buckets:
@@ -84,6 +82,7 @@ async def get_scores(
 async def get_pass_rates(
     lab: str = Query(..., description="Lab identifier, e.g. 'lab-01'"),
     session: AsyncSession = Depends(get_session),
+    api_key: str = Depends(verify_api_key)
 ):
     """Per-task pass rates for a given lab.
 
@@ -125,6 +124,7 @@ async def get_pass_rates(
 async def get_timeline(
     lab: str = Query(..., description="Lab identifier, e.g. 'lab-01'"),
     session: AsyncSession = Depends(get_session),
+    api_key: str = Depends(verify_api_key)
 ):
     """Submissions per day for a given lab.
 
@@ -163,6 +163,7 @@ async def get_timeline(
 async def get_groups(
     lab: str = Query(..., description="Lab identifier, e.g. 'lab-01'"),
     session: AsyncSession = Depends(get_session),
+    api_key: str = Depends(verify_api_key)
 ):
     """Per-group performance for a given lab.
 
