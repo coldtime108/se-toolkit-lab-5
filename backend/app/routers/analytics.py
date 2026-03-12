@@ -1,13 +1,13 @@
 """Router for analytics endpoints.
 
 Each endpoint performs SQL aggregation queries on the interaction data
-populated by the ETL pipeline. All endpoints require a `lab` query
-parameter to filter results by lab (e.g., "lab-01").
+populated by the ETL pipeline. All endpoints require a ).
 """
 from app.auth import verify_api_key
+from sqlmodel import select
 from fastapi import APIRouter, Depends, Query
 from sqlmodel.ext.asyncio.session import AsyncSession
-from sqlmodel import select, func
+from sqlmodel import func
 from sqlalchemy import case
 from app.database import get_session
 from app.models.item import Item
